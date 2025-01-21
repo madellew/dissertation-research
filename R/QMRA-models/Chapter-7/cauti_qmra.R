@@ -5,7 +5,7 @@
 #Last modified: 21 Jan 2025
 
 #Calculate the probability of infection per HCW patient visit
-#Estimates for three measures of environmental contamination: (1) start patient shed low, (2) start patient shed high, (3) exisiting contam
+#Estimates for three measures of environmental contamination: (1) start patient shed low, (2) start patient shed high, (3) existing contam
 #Can factor in disinfection log-reduction (yes/no), whether the contact is guaranteed to be with a dirty fomite (yes/no), 
 #and if a guaranteed break in sterility occurred during HCW-catheter contact (yes/no)
 
@@ -220,26 +220,37 @@ CAUTI.hist <- ggplot(Risk.contam.ggplot, aes(x=Risk, fill=Source, color=Source))
   scale_fill_paletteer_d("rcartocolor::Bold", labels=c("Low Shed", "High Shed", "Pre-seeded"))
 ggsave("CAUTI_Risk_hist.png",CAUTI.hist,dpi=600)
 
-#Boxplot
+#Box/Violin plot
 CAUTI.box <- ggplot(Risk.contam.ggplot, aes(Source, Risk, fill=Source)) + 
-  geom_boxplot() + 
+  #geom_boxplot(alpha=0.75) + 
+  geom_violin(alpha=0.75, trim=FALSE) +
   scale_y_log10() +
-  theme(axis.text.x = element_text(face="bold", color = "black",size = 10, angle=45)) + 
-  labs(x = c(expression("Environmental Contamination Source")), 
+  theme_bw() +
+  theme(text=element_text(family="serif",size=13), axis.text.x=element_text(size = 12)) + 
+  labs(x = "Environmental Contamination Source", 
        y = expression(~log[10]~Probability~of~Infection),fill="Source") + 
-  stat_summary(fun=median, geom="point", size=2.5, color="white") + 
-  stat_summary(fun=mean, geom="point", size=2, color="black",shape=15) + 
-  guides(fill = guide_legend(override.aes = list(shape = NA)))
+  #stat_summary(fun=median, geom="point", size=2.5, shape=5) + 
+  #stat_summary(fun=mean, geom="point", size=2, color="black",shape=16) + 
+  stat_summary(fun.data="mean_sdl", fun.args = list(mult = 1), geom="pointrange") +
+  scale_fill_paletteer_d("rcartocolor::Bold")
 ggsave("CAUTI_Risk_box.png",CAUTI.box)
 
 #Jitterplot
 CAUTI.jitter <- ggplot(Risk.contam.ggplot, aes(Source,Risk)) +
   geom_jitter(aes(colour=Source)) +
+  theme_bw() +
   scale_y_log10() +
-  labs(x = c(expression("Environmental Contamination Source")),
+  labs(x = "Environmental Contamination Source",
        y = c(expression(~log[10]~Probability~of~Infection))) 
 ggsave("CAUTI_Risk_jitter.png",CAUTI.jitter)
 
+#####
+#Additional R scripts for Chapter 7 QMRA
+source('cauti_qmra_sens.R') #CAUTI sensitivity analysis
+source('clabsi_qmra.R') #CLABSI risk estimation
+source('clabsi_qmra_sens.R') #CLABSI sensitivity analysis
+source('cath_qmra_growth.R') #Risk estimation with pathogen growth on/in catheter
+source('cath_qmra_cum.R') #Cumulative risk estimation
 
 #End
 
