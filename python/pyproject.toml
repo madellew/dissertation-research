@@ -1,0 +1,10 @@
+[project]
+name = "dissertation"
+requires-python = ">= 3.8"
+dynamic = ["dependencies"]
+version = "0.1"
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.scripts]
+dissertation = "dissertation.cli:app"
