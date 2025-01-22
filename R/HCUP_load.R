@@ -18,6 +18,7 @@ library(mixtools)
 library(mclust)
 library(paletteer)
 library(ggeffects)
+library(ragg)
 
 #Import data
 hcup <- read.csv("hcup_new.csv", header=TRUE)
@@ -83,3 +84,10 @@ stats::chisq.test(data$CAUTI_HA, data$URCATH1)
 tabyl(data, CAUTI_HA, CAN_HA)
 stats::chisq.test(data$CVC1, data$CAN_HA)
 
+#####
+#Additional R scripts for HCUP Data Analysis
+source('HCUP_OR.R') #calculate odds ratios
+source('HCUP_LOS.R') #analyze length of hospital stay by outcome
+source('HCUP_inf.R') #hospital subset analysis
+
+#END
