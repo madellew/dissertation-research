@@ -446,6 +446,9 @@ CDI.ill.jitter <- ggplot(Risk.ill.ggplot, aes(Source,Risk)) +
                      labels=c("Colonized Shed", "Infected Shed", "Pre-seeded", "HCW Pick up"))
 ggsave("CDI_Risk_Ill_jitter-HH.png",CDI.ill.jitter)
 
+#####
+#Additional R scripts for Chapter 6 QMRA
+source('cdi_qmra_sens.R') #CDI sensitivity analysis
 
 #END
 
